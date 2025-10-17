@@ -13,6 +13,16 @@ const PROFILE = {
   stack: "Node.js/Express",
 };
 
+// Root route
+app.get("/", (req, res) => {
+  res.send("Welcome to the Backend Wizards Stage 0 API");
+});
+
+// Health route
+app.get("/health", (req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
 // GET /me endpoint
 app.get("/me", async (req, res) => {
   try {
@@ -39,6 +49,6 @@ app.get("/me", async (req, res) => {
   }
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, "0.0.0.0", () =>
+  console.log(`Server running on port ${PORT}`)
+);
