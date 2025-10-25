@@ -38,8 +38,27 @@ router.get("/:name", async (req, res) => {
   try {
     const country = await countryModel.getCountryByName(req.params.name);
     if (!country) return res.status(404).json({ error: "Country not found" });
+
+    // Validate required fields
+    const requiredFields = ["name", "population", "currency_code"];
+    const details = {};
+
+    requiredFields.forEach((field) => {
+      if (country[field] === null || country[field] === undefined) {
+        details[field] = "is required";
+      }
+    });
+
+    if (Object.keys(details).length > 0) {
+      return res.status(400).json({
+        error: "Validation failed",
+        details,
+      });
+    }
+
     res.json(country);
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
